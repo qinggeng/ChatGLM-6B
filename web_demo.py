@@ -1,8 +1,8 @@
 from transformers import AutoModel, AutoTokenizer
 import gradio as gr
-
-tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
-model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half().cuda()
+model_name = "THUDM/chatglm-6b-int4"
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().cuda()
 model = model.eval()
 
 MAX_TURNS = 20
@@ -42,4 +42,4 @@ with gr.Blocks() as demo:
             temperature = gr.Slider(0, 1, value=0.95, step=0.01, label="Temperature", interactive=True)
             button = gr.Button("Generate")
     button.click(predict, [txt, max_length, top_p, temperature, state], [state] + text_boxes)
-demo.queue().launch(share=False, inbrowser=True)
+demo.queue().launch(share=True, inbrowser=True)

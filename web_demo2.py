@@ -10,9 +10,9 @@ st.set_page_config(
 
 
 @st.cache_resource
-def get_model():
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
-    model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).half().cuda()
+def get_model(model_name = "THUDM/chatglm-6b"):
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().cuda()
     model = model.eval()
     return tokenizer, model
 
@@ -22,7 +22,7 @@ MAX_BOXES = MAX_TURNS * 2
 
 
 def predict(input, history=None):
-    tokenizer, model = get_model()
+    tokenizer, model = get_model("THUDM/chatglm-6b-int4")
     if history is None:
         history = []
 
